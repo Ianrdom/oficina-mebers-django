@@ -14,7 +14,7 @@ name = ""
 version = ""
 description = ""
 authors = [
-    {name = "Giovanni e Ian", email = "z"},
+    {name = "Ian", email = "email@a.com"},
 ]
 dependencies = [
     "django>=4.2.2",
@@ -26,9 +26,18 @@ dependencies = [
     "python-magic>=0.4.27",
     "Pillow>=10.0.0",
     "drf-spectacular>=0.26.4",
+    "python-dotenv>=1.0.0",
+    "gunicorn>=21.2.0",
+    "whitenoise[brotli]>=6.5.0",
 ]
+[[tool.pdm.autoexport]]
+filename = "requirements.txt"
+without-hashes = "true"
 requires-python = ">=3.10"
 license = {text = "MIT"}
+
+
+
 
 
 
