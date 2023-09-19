@@ -1,9 +1,9 @@
 from rest_framework.viewsets import ModelViewSet
 
-from oficinamebers.models import Categoria
-from oficinamebers.serializers import CategoriaSerializer
+from oficinamebers.models import Produto
+from oficinamebers.serializers import ProdutoSerializer
 
 
-class CategoriaViewSet(ModelViewSet):
-    queryset = Categoria.objects.all()
-    serializer_class = CategoriaSerializer
+class ProdutoViewSet(ModelViewSet):
+    queryset = Produto.objects.all()
+    serializer_class = ProdutoSerializer
