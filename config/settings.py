@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -30,8 +31,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "cloudinary_storage",
+    "cloudinary",
     "uploader",
     "drf_spectacular",
+    "corsheaders",
     "rest_framework_simplejwt",
     "rest_framework",
     "django_extensions",
@@ -59,15 +63,13 @@ else:
     }
 
 print(MODE, DATABASES)
-MEDIA_URL = "http://localhost:8000/media/"
-MEDIA_ENDPOINT = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
-FILE_UPLOAD_PERMISSIONS = 0o640
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -103,11 +105,7 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 WSGI_APPLICATION = "config.wsgi.application"
-SPECTACULAR_SETTINGS = {
-    "TITLE": "Mebers-Oficina API",
-    "DESCRIPTION": "API para a oficina mebers, incluindo endpoints e documentação.",
-    "VERSION": "1.0.0",
-}
+
 
 AUTH_USER_MODEL = "usuario.Usuario"
 # Password validation
@@ -128,7 +126,35 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+USE_TZ = True
 
+STATIC_URL = "/static/"
+MEDIA_ENDPOINT = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+FILE_UPLOAD_PERMISSIONS = 0o640
+
+if MODE in ["PRODUCTION", "MIGRATE"]:
+    CLOUDINARY_URL = os.getenv("CLOUDINARY_URL")
+    DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")
+    STATICFILES_STORAGE = (
+        "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    )
+    MEDIA_URL = "/media/"
+else:
+    from subprocess import run, PIPE
+
+    COMMAND = "nmcli device show | grep IP4.ADDRESS | head -1 | awk '{print $2}' | rev | cut -c 4- | rev"
+    result = run(
+        COMMAND,
+        check=False,
+        stdout=PIPE,
+        stderr=PIPE,
+        universal_newlines=True,
+        shell=True,
+    )
+    ip_addr = result.stdout.strip()
+    MEDIA_URL = f"http://{ip_addr}:19003/media/"
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -141,12 +167,18 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-STATIC_URL = "static/"
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CORS_ALLOW_ALL_ORIGINS = True
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=180),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Mebers-Oficina API",
+    "DESCRIPTION": "API para a oficina mebers, incluindo endpoints e documentação.",
+    "VERSION": "1.0.0",
+}
