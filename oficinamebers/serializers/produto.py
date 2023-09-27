@@ -35,6 +35,7 @@ class ImageProdutoSerializer(serializers.ModelSerializer):
         model = ImagensProduto
         fields = (
             "imagem",
+            "id",
             "principal",
         )
 
