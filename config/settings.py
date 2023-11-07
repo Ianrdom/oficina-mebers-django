@@ -20,9 +20,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 if MODE == "PRODUCTION":
     STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-    STATICFILES_STORAGE = (
-        "whitenoise.storage.CompressedManifestStaticFilesStorage"
-    )
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -34,6 +32,7 @@ INSTALLED_APPS = [
     "cloudinary_storage",
     "cloudinary",
     "uploader",
+    "django_filters",
     "drf_spectacular",
     "corsheaders",
     "rest_framework_simplejwt",
@@ -137,9 +136,7 @@ if MODE in ["PRODUCTION", "MIGRATE"]:
     CLOUDINARY_URL = os.getenv("CLOUDINARY_URL")
     DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
-    STATICFILES_STORAGE = (
-        "whitenoise.storage.CompressedManifestStaticFilesStorage"
-    )
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
     MEDIA_URL = "/media/"
 else:
     from subprocess import run, PIPE
