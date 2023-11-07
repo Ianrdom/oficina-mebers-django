@@ -11,6 +11,7 @@ from uploader.router import router as uploader_router
 from oficinamebers.views import (
     CategoriaViewSet,
     ProdutoViewSet,
+    CompraViewSet,
 )
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -24,6 +25,7 @@ from drf_spectacular.views import (
 
 router = DefaultRouter()
 
+router.register(r"compras", CompraViewSet)
 router.register(r"produtos", ProdutoViewSet)
 router.register(r"categorias", CategoriaViewSet)
 
