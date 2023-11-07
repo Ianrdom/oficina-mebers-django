@@ -30,6 +30,10 @@ class Compra(models.Model):
         choices=StatusCompra.choices, default=StatusCompra.CARRINHO
     )
 
+    @property
+    def total(self):
+        return sum(item.produto.preco * item.quantidade for item in self.itens.all())
+
 
 class ItensCompra(models.Model):
     compra = models.ForeignKey(Compra, on_delete=models.CASCADE, related_name="itens")
