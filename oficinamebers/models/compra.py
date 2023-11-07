@@ -29,6 +29,7 @@ class Compra(models.Model):
     status = models.IntegerField(
         choices=StatusCompra.choices, default=StatusCompra.CARRINHO
     )
+    data = models.DateTimeField(auto_now_add=True)
 
     @property
     def total(self):
