@@ -7,6 +7,7 @@ class Produto(models.Model):
     descricao = models.CharField(max_length=1000)
     categoria = models.ForeignKey("Categoria", on_delete=models.PROTECT)
     preco = models.DecimalField(max_digits=10, decimal_places=2)
+    quantidade = models.IntegerField(default=0)
 
     def __str__(self):
         return self.descricao

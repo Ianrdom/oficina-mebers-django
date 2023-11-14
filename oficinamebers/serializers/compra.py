@@ -30,7 +30,7 @@ class CriarEditarCompraSerializer(ModelSerializer):
         fields = ("usuario", "itens")
 
     def validate(self, data):
-        if data["quantidade"] > data["livro"].quantidade:
+        if data["quantidade"] > data["produto"].quantidade:
             raise serializers.ValidationError(
                 {"quantidade": "Quantidade solicitada não disponível em estoque."}
             )
@@ -40,7 +40,7 @@ class CriarEditarCompraSerializer(ModelSerializer):
         itens = validated_data.pop("itens")
         compra = Compra.objects.create(**validated_data)
         for item in itens:
-            item["preco_item"] = item["livro"].preco
+            item["preco_item"] = item["produto"].preco
             ItensCompra.objects.create(compra=compra, **item)
         compra.save()
         return compra
