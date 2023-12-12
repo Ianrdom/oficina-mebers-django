@@ -24,7 +24,6 @@ class ProdutoSerializer(serializers.ModelSerializer):
             "categoria",
             "preco",
             "imagens",
-            "quantidade",
             "imagem_attachment_key",
         )
 
@@ -53,6 +52,5 @@ class ProdutoDetailSerializer(serializers.ModelSerializer):
             "descricao",
             "categoria",
             "preco",
-            "quantidade",
             "imagens",
         )
