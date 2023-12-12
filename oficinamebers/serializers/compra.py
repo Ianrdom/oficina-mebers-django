@@ -29,12 +29,12 @@ class CriarEditarCompraSerializer(ModelSerializer):
         model = Compra
         fields = ("usuario", "itens")
 
-    def validate(self, data):
-        if data["quantidade"] > data["produto"].quantidade:
-            raise serializers.ValidationError(
-                {"quantidade": "Quantidade solicitada não disponível em estoque."}
-            )
-        return data
+    # def validate(self, data):
+    #     if data["quantidade"] > data["produto"].quantidade:
+    #         raise serializers.ValidationError(
+    #             {"quantidade": "Quantidade solicitada não disponível em estoque."}
+    #         )
+    #     return data
 
     def create(self, validated_data):
         itens = validated_data.pop("itens")
